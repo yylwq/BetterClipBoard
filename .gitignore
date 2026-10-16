@@ -1,0 +1,105 @@
+﻿# ==================== Qt / QtCreator ====================
+# QtCreator 用户配置
+*.pro.user
+*.pro.user.*
+*.qmlproject.user
+*.qmlproject.user.*
+
+# QtCreator 构建目录
+.qmake.stash
+.qmake.cache
+Makefile
+Makefile.Debug
+Makefile.Release
+*.qmake.stash
+
+# Qt 生成的 moc / uic / rcc 文件
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.moc
+*.o
+*.obj
+*.exe
+
+# Qt 自动生成的资源/元信息
+*_autogen/
+/CMakeLists.txt.user*
+
+# ==================== CMake / 构建产物 ====================
+build/
+build-*/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# MSVC / MinGW 中间文件
+*.obj
+*.o
+*.lo
+*.slo
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+
+# ==================== 运行时数据 ====================
+# 本地 SQLite 数据库
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+
+# ==================== 编辑器 / IDE ====================
+# VSCode
+.vscode/
+*.code-workspace
+
+# CLion
+.idea/
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+
+# Vim / Emacs
+*.swp
+*.swo
+*~
+\#*\#
+
+# ==================== 操作系统 ====================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+.directory
+*~
+
+# ==================== 日志 / 临时文件 ====================
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.rej
