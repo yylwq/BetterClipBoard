@@ -17,8 +17,6 @@ public:
     static DataType classify(QImage &image);
 
 public slots:
-    // void getText(QString &text);
-    // void getImage(QImage &image);
 
 signals:
 };

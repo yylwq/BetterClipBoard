@@ -4,6 +4,7 @@
 *.pro.user.*
 *.qmlproject.user
 *.qmlproject.user.*
+.qtcreator/
 
 # QtCreator 构建目录
 .qmake.stash

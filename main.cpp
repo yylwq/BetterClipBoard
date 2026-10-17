@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/BetterClipboard/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/BetterClipboard/qml/main.qml"));
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,
@@ -27,24 +27,24 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.load(url);
 
-    Listener listener;
-    listener.start();
+    // Listener listener;
+    // listener.start();
 
-    DataBase database;
+    // DataBase database;
 
-    QObject::connect(&listener, &Listener::textCopied, [&](const QString &text){
-        Data data;
-        data.text_ = text;
-        data.favorite = false;
-        data.image_ = QImage();
-        data.timestamp_ = QDateTime::currentDateTime();
-        data.type_ = Classify::classify(data.text_);
-        data.tag_ = getTag(data.type_);
+    // QObject::connect(&listener, &Listener::textCopied, [&](const QString &text){
+    //     Data data;
+    //     data.text_ = text;
+    //     data.favorite = false;
+    //     data.image_ = QImage();
+    //     data.timestamp_ = QDateTime::currentDateTime();
+    //     data.type_ = Classify::classify(data.text_);
+    //     data.tag_ = getTag(data.type_);
 
-        qDebug() << "[CREATE] "<<"[" << data.timestamp_.toString(Qt::ISODate) << "] " << "捕获到文本: " << text;
+    //     qDebug() << "[CREATE] "<<"[" << data.timestamp_.toString(Qt::ISODate) << "] " << "捕获到文本: " << text;
 
-        database.insertData(data);
-    });
+    //     database.insertData(data);
+    // });
     // QObject::connect(&listener, &Listener::imageCopied, &classify, &Classify::getImage);
 
     return QGuiApplication::exec();

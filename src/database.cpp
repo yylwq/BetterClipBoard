@@ -2,7 +2,7 @@
 
 #include <QDir>
 #include <QCoreApplication>
-#include <QSqlQuery>
+
 #include <QSqlDatabase>
 #include <QList>
 #include <QDateTime>
@@ -86,17 +86,80 @@ QList<Data> DataBase::getAllData()
 
     while (query.next())
     {
-        Data data;
-        data.id = query.value("id").toInt();
-        data.text_ = query.value("content").toString();
-        data.favorite = query.value("favorite").toBool();
-        data.timestamp_ = query.value("timestamp").toDateTime();
-        data.type_ = stringToDataType(query.value("type").toString());
-        data.tag_ = query.value("timestamp").toString();
-
+        Data data = rowToData(query);
         datas.push_back(data);
     }
     return datas;
+}
+
+QList<Data> DataBase::getRecentData(int limit)
+{
+    QList<Data> datas;
+
+    QSqlQuery query;
+    const QString sql =
+        "SELECT id, content, favorite, timestamp, type, tag FROM " + table_name +
+        "ORDER BY timestamp DESC LIMIT ?";
+    query.prepare(sql);
+    query.addBindValue(limit);
+
+    if (!query.exec())
+    {
+        qDebug() << "查询失败";
+        qDebug() << "sql:" << query.lastQuery();
+        return datas;
+    }
+
+    while (query.next())
+    {
+        Data data = rowToData(query);
+        datas.push_back(data);
+    }
+    return datas;
+}
+
+QList<Data> DataBase::getDataByType(const DataType &type, int offset, int limit)
+{
+    QList<Data> datas;
+
+    QSqlQuery query;
+    const QString sql =
+        "SELECT id, content, favorite, timestamp, type, tag FROM " + table_name +
+        " WHERE type = ? ORDER BY timestamp DESC LIMIT ? OFFSET ?";
+    query.prepare(sql);
+    query.addBindValue(typeToString(type));
+    query.addBindValue(limit);
+    query.addBindValue(offset);
+
+    if (!query.exec())
+    {
+        qDebug() << "查询失败";
+        qDebug() << "sql:" << query.lastQuery();
+        return datas;
+    }
+
+    while (query.next())
+    {
+        Data data = rowToData(query);
+        datas.push_back(data);
+    }
+    return datas;
+}
+
+int DataBase::getCountByType(const DataType &type)
+{
+    QSqlQuery query;
+    query.prepare("SELECT COUNT(*) FROM" + table_name + "WHERE type = ?");
+    query.addBindValue(typeToString(type));
+
+    if (!query.exec() || !query.next())
+    {
+        qDebug() << "查询失败";
+        qDebug() << "sql:" << query.lastQuery();
+        return -1;
+    }
+
+    return query.value(0).toInt();
 }
 
 void DataBase::initDatabase()
@@ -127,4 +190,17 @@ void DataBase::createTable()
 
     table_name = "datas";
     qDebug() << "建表成功!";
+}
+
+Data DataBase::rowToData(const QSqlQuery &query)
+{
+    Data data;
+    data.id_ = query.value("id").toInt();
+    data.text_ = query.value("content").toString();
+    data.favorite = query.value("favorite").toBool();
+    data.timestamp_ = query.value("timestamp").toDateTime();
+    data.type_ = stringToType(query.value("type").toString());
+    data.tag_ = query.value("timestamp").toString();
+
+    return data;
 }

@@ -16,7 +16,7 @@ enum DataType
 
 struct Data
 {
-    int id = -1;
+    int id_ = -1;
     QString text_;
     QImage image_;
     bool favorite;
@@ -44,7 +44,15 @@ static QString getTag(DataType date_type)
     return "";
 }
 
-static DataType stringToDataType(const QString &type)
+static QString typeToString(const DataType &type)
+{
+    if (type == Text) return "文本";
+    if (type == Code) return "代码";
+    if (type == Email) return "邮箱";
+    return "";
+}
+
+static DataType stringToType(const QString &type)
 {
     if (type == "文本") return Text;
     if (type == "代码") return Code;

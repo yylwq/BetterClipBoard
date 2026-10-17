@@ -14,17 +14,24 @@ qt_add_executable(appBetterClipboard
 qt_add_qml_module(appBetterClipboard
     URI BetterClipboard
     VERSION 1.0
-    QML_FILES main.qml
+    QML_FILES
+        qml/main.qml
+        qml/Global.qml
     SOURCES
         include/listener.h
         include/const.h
         include/classify.h
         include/data.h
         include/database.h
+        include/datamodel.h
 
         src/classify.cpp
         src/listener.cpp
         src/database.cpp
+        src/datamodel.cpp
+
+    RESOURCES
+        qml/images/header.jpg
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
