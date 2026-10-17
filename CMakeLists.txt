@@ -32,6 +32,11 @@ qt_add_qml_module(appBetterClipboard
 
     RESOURCES
         qml/images/header.jpg
+        qml/Home/RecentPage.qml
+        qml/component/SearchBar.qml
+        qml/component/DataCard.qml
+        QML_FILES qml/Home/HistoryPage.qml
+        QML_FILES qml/Home/FavoritePage.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

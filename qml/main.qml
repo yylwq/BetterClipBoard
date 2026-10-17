@@ -40,16 +40,17 @@ HusWindow {
             opacity: 0.2
         }
 
-        HusRouter {
+
+        // 路由
+        QtObject {
             id: betterClipboardRouter
             property var urlDataMap: new Map
 
-            function gotoUrl(url) {
-                if (urlDataMap.has(url))
-                {
-                    const data = urlDataMap.get(url)
-                }
+            signal sourceChanged(string source)
 
+            function push(source)
+            {
+                sourceChanged(source)
             }
         }
 
@@ -61,7 +62,7 @@ HusWindow {
             width: visible ? mainMenu.defaultMenuWidth : 0
             height: visible ? 80 : 0
             anchors.top: parent.top
-            anchors.topMargin: 5
+            anchors.topMargin: 3
             radius: HusTheme.Primary.radiusPrimary
 
             color: hovered ? HusTheme.isDark ? '#10ffffff' : '#10000000' : 'transparent'
@@ -87,7 +88,7 @@ HusWindow {
                 Column {
                     anchors.left: avatarIcon.right
                     anchors.leftMargin: 10
-                    anchors.right: parent
+                    anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
 
                     spacing: 4
@@ -125,18 +126,20 @@ HusWindow {
                 }
             }
         }
-
         // 菜单
         HusMenu {
             id: mainMenu
             anchors.left: parent.left
-            anchors.top: parent.bottom
+            anchors.top: authorCard.bottom
             anchors.bottom: parent.bottom
             defaultMenuWidth: 300
             defaultSelectedKeys: ["recentPage"]
             compactMode: HusMenu.Mode_Relaxed
             showEdge: true
             initModel: global.betterCBMenuModel
+
+            property var model: parent.model
+            property var menuButton: parent.menuButton
 
             menuLabelDelegate: HusText {
                 text: menuButton.text
@@ -154,16 +157,57 @@ HusWindow {
 
             onClickMenu: function(deep, key, keyPath, data)
             {
-                if (data)
+                if (!data)
                 {
-                    if (data.hasOwnProperty('menuChildren')) {
-                        setDataProperty(key, 'badgeState', '');
-                    } else {
-                        galleryRouter.urlDataMap.set(Qt.url(data.source), data);
-                        galleryRouter.push(data.source);
-                        console.debug('onClickMenu', deep, key, keyPath, JSON.stringify(data));
-                    }
+                    return;
                 }
+
+                if (data.hasOwnProperty('menuChildren') && data.menuChildren.length > 0)
+                {
+                    setDataProperty(key, 'badgeState', '');
+                } else {
+                    betterClipboardRouter.urlDataMap.set(data.key, data);
+                    betterClipboardRouter.push(data.key);
+                }
+            }
+        }
+
+        Loader{
+            id: pageLoader
+            anchors.left: mainMenu.right
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+
+            anchors.leftMargin: 5
+            anchors.topMargin: 5
+            anchors.bottomMargin: 5
+            anchors.rightMargin: 5
+
+            function loadBySource(source)
+            {
+                switch (source)
+                {
+                case "recentPage":
+                    pageLoader.setSource(Qt.resolvedUrl("Home/RecentPage.qml"));
+                    break;
+                case "historyPage":
+                    pageLoader.setSource(Qt.resolvedUrl("Home/HistoryPage.qml"));
+                    break;
+                case "favoritePage":
+                    pageLoader.setSource(Qt.resolvedUrl("Home/FavoritePage.qml"));
+                    break;
+                default:
+                    console.warn("Unknown source:", source);
+                }
+            }
+        }
+
+        Connections {
+            target: betterClipboardRouter
+            function onSourceChanged(source)
+            {
+                pageLoader.loadBySource(source)
             }
         }
 
