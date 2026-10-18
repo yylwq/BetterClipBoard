@@ -16,9 +16,11 @@ public:
     static DataType classify(QString &text);
     static DataType classify(QImage &image);
 
-public slots:
-
-signals:
+private:
+    static bool isCode(QString &text);
+    static bool isEmail(QString &text);
+    static bool isUrl(QString &text);
+    static bool isMagneticSeed(QString &text);
 };
 
 #endif // CLASSIFY_H

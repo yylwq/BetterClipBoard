@@ -12,4 +12,20 @@ QtObject {
         { key: "favoritePage", label: " 收藏", iconSource: HusIcon.HeartOutlined,
             source: "./Home/FavoritePage.qml"},
     ]
+
+    property var historyPageTabModel: [
+        {
+            key: '1',
+            title: '文本',
+        },
+        {
+            key: '2',
+            title: '代码',
+        },
+        {
+            key: '3',           
+            title: '邮箱',
+        },
+    ]
+
 }

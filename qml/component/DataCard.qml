@@ -5,17 +5,19 @@ import HuskarUI.Basic
 Rectangle {
     id: dataCard
 
-    height: 200
-    width: 400
+    property string dataText: ""
+    property string dataTag: ""
+    property string dataType: ""
+    property string dataTimestamp: ""
+    property string dataColor: getColor(dataType)
 
-    anchors.leftMargin: 5
-    anchors.rightMargin: 5
-    anchors.topMargin: 8
-    anchors.bottomMargin: 5
-
-    property string dataText: "123"
-    property color dataColor: "pink"
-    property string dataTag: "123"
+    function getColor(type)
+    {
+        if (type === "文本") return "#90CAFF";
+        if (type === "代码") return "#B0C8FF";
+        if (type === "邮箱") return "#FFD9E9";
+        return "white";
+    }
 
     color: dataColor
     radius: 8
@@ -26,7 +28,6 @@ Rectangle {
         anchors.margins: 10
         spacing: 6
 
-        // 左侧
         ColumnLayout{
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -55,8 +56,13 @@ Rectangle {
                 spacing: 6
 
                 HusTag {
+                    text: dataTimestamp
+                    presetColor: '#D9B3FF'
+                }
+
+                HusTag {
                     text: dataTag
-                    presetColor: 'magenta'
+                    presetColor: '#D9B3FF'
                 }
 
                 Item {

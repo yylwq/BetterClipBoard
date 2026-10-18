@@ -1,4 +1,6 @@
-﻿#include <QObject>
+﻿#pragma once
+
+#include <QObject>
 #include <QSqlQuery>
 
 #include "const.h"

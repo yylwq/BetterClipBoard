@@ -53,7 +53,7 @@ void DataBase::insertData(const Data &data)
         qDebug() << "SQL:" << query.lastQuery();
         return;
     }
-    qDebug() << "[SQL] 插入一条数据：" << data.timestamp_.toString(Qt::ISODate) << " " <<data.text_ << " " << data.typeToString();
+    qDebug() << "[SQL] 插入一条数据：" << data.timestamp_.toString(Qt::ISODate) << " " <<data.text_ << " " << typeToString(data.type_);
 }
 
 void DataBase::removeDate(int id)

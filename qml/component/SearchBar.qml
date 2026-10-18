@@ -36,10 +36,6 @@ HusRectangle{
                 { value: "7days", label: "近7天"   },
                 { value: "14days", label: "近14天" }
             ]
-
-            // onActivated: {
-            //     //
-            // }
         }
 
         HusSelect {
@@ -50,9 +46,6 @@ HusRectangle{
                 { value: "newest", label: "最新优先" },
                 { value: "oldest", label: "最旧优先" }
             ]
-            // onActivated: {
-            //     //
-            // }
         }
     }
 

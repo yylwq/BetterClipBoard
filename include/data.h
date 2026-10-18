@@ -11,7 +11,9 @@ enum DataType
 {
     Text,
     Code,
-    Email
+    Email,
+    Url,
+    MagneticSeed
 };
 
 struct Data
@@ -29,6 +31,8 @@ struct Data
         if (type_ == Text) return "文本";
         if (type_ == Code) return "代码";
         if (type_ == Email) return "邮箱";
+        if (type_ == Url) return "链接";
+        if (type_ == MagneticSeed) return "磁力种子";
         return "";
     }
 };
@@ -40,6 +44,8 @@ static QString getTag(DataType date_type)
     case Text: return "文本";
     case Code: return "代码";
     case Email: return "邮箱";
+    case Url: return "链接";
+    case MagneticSeed: return "磁力种子";
     }
     return "";
 }
@@ -49,6 +55,8 @@ static QString typeToString(const DataType &type)
     if (type == Text) return "文本";
     if (type == Code) return "代码";
     if (type == Email) return "邮箱";
+    if (type == Url) return "链接";
+    if (type == MagneticSeed) return "磁力种子";
     return "";
 }
 
@@ -57,6 +65,8 @@ static DataType stringToType(const QString &type)
     if (type == "文本") return Text;
     if (type == "代码") return Code;
     if (type == "邮箱") return Email;
+    if (type == "链接") return Url;
+    if (type == "磁力种子") return MagneticSeed;
     return Text;
 }
 
