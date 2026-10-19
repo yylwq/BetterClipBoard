@@ -27,6 +27,31 @@ Rectangle{
 
         initModel: global1.historyPageTabModel
 
+        onCurrentIndexChanged: function () {
+            if (currentIndex === 1)
+            {
+                return;
+            }
+            if (currentIndex === 2)
+            {
+                recentGridView.model = emailDataModel
+                return;
+            }
+
+            if (currentIndex === 3)
+            {
+                recentGridView.model = urlDataModel
+                return;
+            }
+
+            if (currentIndex === 4)
+            {
+                return;
+            }
+
+            recentGridView.model = textDataModel
+        }
+
         contentDelegate: Rectangle{
             id: hidtoryPageDelegate
             anchors.fill: parent
@@ -61,7 +86,7 @@ Rectangle{
 
                 ScrollBar.vertical: HusScrollBar {}
 
-                model: dataModel
+                // model: recentDataModel
                 delegate: Item {
                     width: recentGridView.cellWidth
                     height: recentGridView.cellHeight

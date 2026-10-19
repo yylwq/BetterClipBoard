@@ -23,20 +23,32 @@ qt_add_qml_module(appBetterClipboard
         include/classify.h
         include/data.h
         include/database.h
-        include/datamodel.h
+
+        include/DataModel/datamodel.h
+        include/DataModel/recentdatamodel.h
+        include/DataModel/emaildatamodel.h
+        include/DataModel/favoritedatamodel.h
+        include/DataModel/urldatamodel.h
+        include/DataModel/textdatamodel.h
 
         src/classify.cpp
         src/listener.cpp
         src/database.cpp
         src/datamodel.cpp
+        src/recentdatamodel.cpp
+        src/Emaildatamodel.cpp
+        src/favoritedatamodel.cpp
+        src/Textdatamodel.cpp
+        src/Urldatamodel.cpp
 
     RESOURCES
         qml/images/header.jpg
         qml/Home/RecentPage.qml
         qml/component/SearchBar.qml
         qml/component/DataCard.qml
-        QML_FILES qml/Home/HistoryPage.qml
-        QML_FILES qml/Home/FavoritePage.qml
+        qml/Home/HistoryPage.qml
+        qml/Home/FavoritePage.qml
+
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

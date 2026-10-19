@@ -207,6 +207,11 @@ HusWindow {
             target: betterClipboardRouter
             function onSourceChanged(source)
             {
+                if (source === "recentPage")
+                {
+                    dataModel.loadRecentData()
+                }
+
                 pageLoader.loadBySource(source)
             }
         }

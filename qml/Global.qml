@@ -26,6 +26,15 @@ QtObject {
             key: '3',           
             title: '邮箱',
         },
+        {
+            key: "4",
+            title: "链接"
+        },
+        {
+            key: "5",
+            title: "磁力种子"
+        }
+
     ]
 
 }

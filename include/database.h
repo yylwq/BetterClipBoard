@@ -15,9 +15,9 @@ public:
     void removeDate(int id);
     QList<Data> getAllData();
     QList<Data> getRecentData(int limit);
+    QList<Data> getFavoriteData(int limit);
 
-    // limit 返回的行数 offset 跳过的行数
-    QList<Data> getDataByType(const DataType &type, int offset, int limit);
+    QList<Data> getAllDataByType(const DataType &type);
     int getCountByType(const DataType &type);
 
 private:
@@ -30,4 +30,7 @@ private:
     void createTable();
 
     static Data rowToData(const QSqlQuery &query);
+
+signals:
+    void insertedData(const Data &data);
 };

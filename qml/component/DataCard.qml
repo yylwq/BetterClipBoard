@@ -9,15 +9,8 @@ Rectangle {
     property string dataTag: ""
     property string dataType: ""
     property string dataTimestamp: ""
-    property string dataColor: getColor(dataType)
+    property string dataColor: "white"
 
-    function getColor(type)
-    {
-        if (type === "文本") return "#90CAFF";
-        if (type === "代码") return "#B0C8FF";
-        if (type === "邮箱") return "#FFD9E9";
-        return "white";
-    }
 
     color: dataColor
     radius: 8
@@ -57,12 +50,14 @@ Rectangle {
 
                 HusTag {
                     text: dataTimestamp
-                    presetColor: '#D9B3FF'
+                    colorText: '#EF0A84'
+                    presetColor: '#83A8DC'
                 }
 
                 HusTag {
                     text: dataTag
-                    presetColor: '#D9B3FF'
+                    colorText: '#EF0A84'
+                    presetColor: '#83A8DC'
                 }
 
                 Item {

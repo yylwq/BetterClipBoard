@@ -1,4 +1,4 @@
-﻿#include "../include/datamodel.h"
+﻿#include "../include/DataModel/datamodel.h"
 
 DataModel::DataModel(DataBase *database, QObject *parent)
     : QAbstractListModel(parent)
@@ -48,25 +48,11 @@ QHash<int, QByteArray> DataModel::roleNames() const
     return hash;
 }
 
-void DataModel::loadPage(const QString &type, int page)
+
+void DataModel::loadPage(const QString &type)
 {
-    cur_type = type;
-    cur_page = page;
-
-    const int page_size = 20;
-    const int total_count = database->getCountByType(stringToType(type));
-
-    total_page = qMax(1, (total_count + page_size - 1) / page_size);
-
-    if (cur_page > total_page)
-    {
-        cur_page = total_page;
-    }
-
-    int offset = (cur_page - 1) * page_size;
-
     beginResetModel();
-    datas = database->getDataByType(stringToType(type), offset, page_size);
+    datas = database->getAllDataByType(stringToType(type));
     endResetModel();
 
     emit pageChanged();
@@ -74,10 +60,6 @@ void DataModel::loadPage(const QString &type, int page)
 
 void DataModel::loadRecentData(int limit)
 {
-    cur_page = 1;
-    total_page = 1;
-
-    cur_type = "__recent__";
     beginResetModel();
     datas = database->getRecentData(limit);
     endResetModel();
@@ -85,41 +67,16 @@ void DataModel::loadRecentData(int limit)
     emit pageChanged();
 }
 
-QString DataModel::getCur_type() const
+void DataModel::loadFavoriteData(int limit)
 {
-    return cur_type;
+    beginResetModel();
+    datas = database->getFavoriteData(limit);
+    endResetModel();
+
+    emit pageChanged();
 }
 
-void DataModel::setCur_type(const QString &newCur_type)
-{
-    if (cur_type == newCur_type)
-        return;
-    cur_type = newCur_type;
-    emit cur_typeChanged();
-}
 
-int DataModel::getCur_page() const
-{
-    return cur_page;
-}
 
-void DataModel::setCur_page(int newCur_page)
-{
-    if (cur_page == newCur_page)
-        return;
-    cur_page = newCur_page;
-    emit cur_pageChanged();
-}
 
-int DataModel::getTotal_page() const
-{
-    return total_page;
-}
 
-void DataModel::setTotal_page(int newTotal_page)
-{
-    if (total_page == newTotal_page)
-        return;
-    total_page = newTotal_page;
-    emit total_pageChanged();
-}

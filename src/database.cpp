@@ -54,6 +54,8 @@ void DataBase::insertData(const Data &data)
         return;
     }
     qDebug() << "[SQL] 插入一条数据：" << data.timestamp_.toString(Qt::ISODate) << " " <<data.text_ << " " << typeToString(data.type_);
+
+    emit insertedData(data);
 }
 
 void DataBase::removeDate(int id)
@@ -99,7 +101,7 @@ QList<Data> DataBase::getRecentData(int limit)
     QSqlQuery query;
     const QString sql =
         "SELECT id, content, favorite, timestamp, type, tag FROM " + table_name +
-        "ORDER BY timestamp DESC LIMIT ?";
+        " ORDER BY timestamp DESC LIMIT ?";
     query.prepare(sql);
     query.addBindValue(limit);
 
@@ -118,18 +120,43 @@ QList<Data> DataBase::getRecentData(int limit)
     return datas;
 }
 
-QList<Data> DataBase::getDataByType(const DataType &type, int offset, int limit)
+QList<Data> DataBase::getFavoriteData(int limit)
 {
     QList<Data> datas;
 
     QSqlQuery query;
     const QString sql =
         "SELECT id, content, favorite, timestamp, type, tag FROM " + table_name +
-        " WHERE type = ? ORDER BY timestamp DESC LIMIT ? OFFSET ?";
+        "WHERE favorite = 1 ORDER BY timestamp DESC LIMIT ?";
+    query.prepare(sql);
+    query.addBindValue(limit);
+
+    if (!query.exec())
+    {
+        qDebug() << "查询失败";
+        qDebug() << "sql:" << query.lastQuery();
+        return datas;
+    }
+
+    while (query.next())
+    {
+        Data data = rowToData(query);
+        datas.push_back(data);
+    }
+    return datas;
+}
+
+
+QList<Data> DataBase::getAllDataByType(const DataType &type)
+{
+    QList<Data> datas;
+
+    QSqlQuery query;
+    const QString sql =
+        "SELECT id, content, favorite, timestamp, type, tag FROM " + table_name +
+        " WHERE type = ? ORDER BY timestamp DESC";
     query.prepare(sql);
     query.addBindValue(typeToString(type));
-    query.addBindValue(limit);
-    query.addBindValue(offset);
 
     if (!query.exec())
     {

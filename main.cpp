@@ -9,9 +9,14 @@
 #include "include/classify.h"
 #include "include/data.h"
 #include "include/listener.h"
-#include "include/const.h"
 #include "include/database.h"
-#include "include/datamodel.h"
+
+#include "include/DataModel/datamodel.h"
+#include "include/DataModel/recentdatamodel.h"
+#include "include/DataModel/emaildatamodel.h"
+#include "include/DataModel/textdatamodel.h"
+#include "include/DataModel/urldatamodel.h"
+#include "include/DataModel/favoritedatamodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -34,9 +39,17 @@ int main(int argc, char *argv[])
     listener.start();
 
     DataBase database;
-    DataModel* data_model = new DataModel(&database);
+    DataModel* recent_model = new RecentDataModel(&database);
+    DataModel* favorite_model = new FavoriteDataModel(&database);
+    DataModel* text_model = new TextDataModel(&database);
+    DataModel* email_model = new EmailDataModel(&database);
+    DataModel* url_model = new UrlDataModel(&database);
 
-    engine.rootContext()->setContextProperty("dataModel", data_model);
+    engine.rootContext()->setContextProperty("recentDataModel", recent_model);
+    engine.rootContext()->setContextProperty("favoriteDataModel", favorite_model);
+    engine.rootContext()->setContextProperty("textDataModel", text_model);
+    engine.rootContext()->setContextProperty("emailDataModel", email_model);
+    engine.rootContext()->setContextProperty("urlDataModel", url_model);
 
     QObject::connect(&listener, &Listener::textCopied, [&](const QString &text){
         Data data;
@@ -51,8 +64,6 @@ int main(int argc, char *argv[])
 
         database.insertData(data);
     });
-
-    // QObject::connect(&listener, &Listener::imageCopied, &classify, &Classify::getImage);
 
     return QGuiApplication::exec();
 }
