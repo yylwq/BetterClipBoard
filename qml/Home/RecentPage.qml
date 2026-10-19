@@ -39,6 +39,7 @@ Rectangle{
         ScrollBar.vertical: HusScrollBar {}
 
         model: recentDataModel
+
         delegate: Item {
             width: recentGridView.cellWidth
             height: recentGridView.cellHeight

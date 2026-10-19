@@ -30,6 +30,8 @@ qt_add_qml_module(appBetterClipboard
         include/DataModel/favoritedatamodel.h
         include/DataModel/urldatamodel.h
         include/DataModel/textdatamodel.h
+        include/DataModel/codedatamodel.h
+        include/DataModel/magneticseeddatamodel.h
 
         src/classify.cpp
         src/listener.cpp
@@ -40,6 +42,8 @@ qt_add_qml_module(appBetterClipboard
         src/favoritedatamodel.cpp
         src/Textdatamodel.cpp
         src/Urldatamodel.cpp
+        src/codedatamodel.cpp
+        src/magneticseeddatamodel.cpp
 
     RESOURCES
         qml/images/header.jpg

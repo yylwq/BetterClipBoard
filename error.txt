@@ -1,0 +1,6 @@
+﻿qml: 0
+qrc:/BetterClipboard/qml/Home/HistoryPage.qml:88: ReferenceError: recentGridView is not defined
+qml: 1
+qrc:/BetterClipboard/qml/Home/HistoryPage.qml:88: ReferenceError: recentGridView is not defined
+qml: 2
+qrc:/BetterClipboard/qml/Home/HistoryPage.qml:86: ReferenceError: recentGridView is not defined

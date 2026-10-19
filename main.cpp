@@ -17,6 +17,8 @@
 #include "include/DataModel/textdatamodel.h"
 #include "include/DataModel/urldatamodel.h"
 #include "include/DataModel/favoritedatamodel.h"
+#include "include/DataModel/magneticseeddatamodel.h"
+#include "include/DataModel/codedatamodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -44,12 +46,16 @@ int main(int argc, char *argv[])
     DataModel* text_model = new TextDataModel(&database);
     DataModel* email_model = new EmailDataModel(&database);
     DataModel* url_model = new UrlDataModel(&database);
+    DataModel* code_model = new CodeDataModel(&database);
+    DataModel* magneticseed_model = new MagneticSeedDataModel(&database);
 
     engine.rootContext()->setContextProperty("recentDataModel", recent_model);
     engine.rootContext()->setContextProperty("favoriteDataModel", favorite_model);
     engine.rootContext()->setContextProperty("textDataModel", text_model);
     engine.rootContext()->setContextProperty("emailDataModel", email_model);
     engine.rootContext()->setContextProperty("urlDataModel", url_model);
+    engine.rootContext()->setContextProperty("codeDataModel", code_model);
+    engine.rootContext()->setContextProperty("magneticseedDataModel", magneticseed_model);
 
     QObject::connect(&listener, &Listener::textCopied, [&](const QString &text){
         Data data;

@@ -6,10 +6,12 @@
 #include "const.h"
 #include "data.h"
 
-class DataBase
+class DataBase : public QObject
 {
+    Q_OBJECT
+
 public:
-    DataBase();
+    explicit DataBase(QObject *parent = nullptr);
 
     void insertData(const Data &data);
     void removeDate(int id);

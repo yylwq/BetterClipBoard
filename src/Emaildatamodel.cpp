@@ -4,17 +4,18 @@
 EmailDataModel::EmailDataModel(DataBase *database, QObject *parent) : DataModel(database, parent)
 {
     datas = database->getAllDataByType(DataType::Email);
-    // connect(this->database, &DataBase::insertedData, this, &EmailDataModel::updateDatas);
+    connect(this->database, &DataBase::insertedData, this, &EmailDataModel::updateDatas);
 }
 
 void EmailDataModel::addData(const Data &data)
 {
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    beginInsertRows(QModelIndex(), 0, 0);
     datas.push_front(data);
     endInsertRows();
 }
 
 void EmailDataModel::updateDatas(const Data &data)
 {
-    addData(data);
+    if (data.type_ == DataType::Email)
+        addData(data);
 }

@@ -7,7 +7,7 @@
 #include <QList>
 #include <QDateTime>
 
-DataBase::DataBase()
+DataBase::DataBase(QObject *parent) : QObject(parent)
 {
     QString effectivePath;
 
@@ -66,7 +66,7 @@ void DataBase::removeDate(int id)
 
     if (!query.exec())
     {
-        qDebug() << "删除失败！";
+        qDebug() << "[removeDate(int id)] 删除失败！";
         qDebug() << "SQL: " << query.lastQuery();
     }
 }
@@ -81,7 +81,7 @@ QList<Data> DataBase::getAllData()
 
     if (!query.exec(sql))
     {
-        qDebug() << "数据读取失败!";
+        qDebug() << "[getAllData()] 数据读取失败!";
         qDebug() << "SQL:" << query.lastQuery();
         return datas;
     }
@@ -107,7 +107,7 @@ QList<Data> DataBase::getRecentData(int limit)
 
     if (!query.exec())
     {
-        qDebug() << "查询失败";
+        qDebug() << "[getRecentData(int limit)] 查询失败";
         qDebug() << "sql:" << query.lastQuery();
         return datas;
     }
@@ -127,13 +127,13 @@ QList<Data> DataBase::getFavoriteData(int limit)
     QSqlQuery query;
     const QString sql =
         "SELECT id, content, favorite, timestamp, type, tag FROM " + table_name +
-        "WHERE favorite = 1 ORDER BY timestamp DESC LIMIT ?";
+        " WHERE favorite = 1 ORDER BY timestamp DESC LIMIT ?";
     query.prepare(sql);
     query.addBindValue(limit);
 
     if (!query.exec())
     {
-        qDebug() << "查询失败";
+        qDebug() << "[getFavoriteData(int limit)] 查询失败";
         qDebug() << "sql:" << query.lastQuery();
         return datas;
     }
@@ -160,7 +160,7 @@ QList<Data> DataBase::getAllDataByType(const DataType &type)
 
     if (!query.exec())
     {
-        qDebug() << "查询失败";
+        qDebug() << "[getAllDataByType(const DataType &type)] 查询失败";
         qDebug() << "sql:" << query.lastQuery();
         return datas;
     }
@@ -181,7 +181,7 @@ int DataBase::getCountByType(const DataType &type)
 
     if (!query.exec() || !query.next())
     {
-        qDebug() << "查询失败";
+        qDebug() << "[getCountByType(const DataType &type)] 查询失败";
         qDebug() << "sql:" << query.lastQuery();
         return -1;
     }

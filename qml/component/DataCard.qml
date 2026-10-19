@@ -1,5 +1,6 @@
 ﻿import QtQuick 2.15
 import QtQuick.Layouts
+import QtQuick.Controls
 import HuskarUI.Basic
 
 Rectangle {
@@ -27,16 +28,28 @@ Rectangle {
             spacing: 4
 
             HusText {
+                id: contentText
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: dataText
-                font.pixelSize: 18          // 字体加大
+                font.pixelSize: 18
                 font.bold: true
                 elide: Text.ElideRight
-                maximumLineCount: 2
                 wrapMode: Text.WrapAnywhere
                 horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter   // 垂直居中
+                verticalAlignment: Text.AlignVCenter
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    onClicked: {
+                        if (fullTextPopup.opened)
+                            fullTextPopup.close()
+                        else if (contentText.truncated && !fullTextPopup.opened){
+                             fullTextPopup.open()
+                        } else {}
+                    }
+                }
             }
 
             HusDivider {
@@ -50,12 +63,6 @@ Rectangle {
 
                 HusTag {
                     text: dataTimestamp
-                    colorText: '#EF0A84'
-                    presetColor: '#83A8DC'
-                }
-
-                HusTag {
-                    text: dataTag
                     colorText: '#EF0A84'
                     presetColor: '#83A8DC'
                 }
@@ -82,6 +89,50 @@ Rectangle {
                         HusToolTip { showArrow: true; visible: parent.hovered; text: '删除' }
                     }
                 }
+            }
+        }
+    }
+
+    HusPopup {
+        id: fullTextPopup
+        width: 500
+        height: 500
+
+        x: (parent.width - width) * 0.5
+        y: (parent.height - height) * 0.5
+
+        parent: Overlay.overlay
+        closePolicy: Popup.NoAutoClose
+
+        movable: true
+        resizable: true
+        modal: false
+
+        contentItem: Item {
+            anchors.fill: parent
+
+            HusCaptionButton {
+                id: popCloseButton
+                anchors.right: parent.right
+                radiusBg.topRight: fullTextPopup.radiusBg.topRight
+                colorText: colorIcon
+                iconSource: HusIcon.CloseOutlined
+                onClicked: fullTextPopup.close()
+            }
+
+            HusText {
+                anchors.top: popCloseButton.bottom
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                anchors.left: parent.left
+
+                text: dataText
+                font.pixelSize: 25
+                wrapMode: Text.WrapAnywhere
+                color: HusTheme.isDark ? '#e0e0e0' : '#333'
+                font.bold: true
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
             }
         }
     }
