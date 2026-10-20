@@ -24,5 +24,11 @@ void FavoriteDataModel::updateDatas(const Data &data)
 
 void FavoriteDataModel::updateFavorite(const int &id, const bool &favo)
 {
-    removeDataFromModel(id);
+    if (favo) {
+        removeDataFromModel(id);
+    } else {
+        Data data = database->getDataById(id);
+        if (data.id_ != -1)
+            addData(data);
+    }
 }

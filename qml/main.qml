@@ -12,15 +12,13 @@ HusWindow {
     visible: true
     title: qsTr("Better Clipboard")
 
-    followThemeSwitch: true
+    followThemeSwitch: false
 
     // CaptionBar 配置
     captionBar.visible: true
     captionBar.height: 30
-    captionBar.showThemeButton: true
-    captionBar.showTopButton: true
-    // captionBar.themeCallback: () => themeSwitchLoader.active = true
-    captionBar.topCallback:   (checked) => HusApi.setWindowStaysOnTopHint(galleryWindow, checked)
+    captionBar.showThemeButton: false
+    captionBar.showTopButton: false
 
     Global { id: global }
 
@@ -212,7 +210,13 @@ HusWindow {
         }
 
         Component.onCompleted: {
-            pageLoader.loadBySource("recentPage")
+            initialLoadTimer.start()
+        }
+
+        Timer {
+            id: initialLoadTimer
+            interval: 0
+            onTriggered: pageLoader.loadBySource("recentPage")
         }
     }
 }

@@ -24,27 +24,15 @@
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
-
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/BetterClipboard/qml/main.qml"));
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreated,
-        &app,
-        [url](QObject *obj, const QUrl &objUrl) {
-            if (!obj && url == objUrl)
-                QCoreApplication::exit(-1);
-        },
-        Qt::QueuedConnection);
-    engine.load(url);
+
+    DataBase database;
 
     Listener listener;
     listener.start();
 
-    engine.rootContext()->setContextProperty("listener", &listener);
-
-    DataBase database;
     engine.rootContext()->setContextProperty("database", &database);
+    engine.rootContext()->setContextProperty("listener", &listener);
 
     DataModel* recent_model = new RecentDataModel(&database);
     DataModel* favorite_model = new FavoriteDataModel(&database);
@@ -61,6 +49,18 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("urlDataModel", url_model);
     engine.rootContext()->setContextProperty("codeDataModel", code_model);
     engine.rootContext()->setContextProperty("magneticseedDataModel", magneticseed_model);
+
+    const QUrl url(QStringLiteral("qrc:/BetterClipboard/qml/main.qml"));
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreated,
+        &app,
+        [url](QObject *obj, const QUrl &objUrl) {
+            if (!obj && url == objUrl)
+                QCoreApplication::exit(-1);
+        },
+        Qt::QueuedConnection);
+    engine.load(url);
 
     QObject::connect(&listener, &Listener::textCopied, [&](const QString &text){
         Data data;

@@ -23,6 +23,7 @@ public:
 
     QList<Data> getAllDataByType(const DataType &type);
     int getCountByType(const DataType &type);
+    Data getDataById(int id);
 
 public slots:
     void qmlClickChangeFavorite(const int &id, const bool &favo, const QString& data_type);

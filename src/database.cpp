@@ -196,7 +196,7 @@ QList<Data> DataBase::getAllDataByType(const DataType &type)
 int DataBase::getCountByType(const DataType &type)
 {
     QSqlQuery query;
-    query.prepare("SELECT COUNT(*) FROM" + table_name + "WHERE type = ?");
+    query.prepare("SELECT COUNT(*) FROM " + table_name + " WHERE type = ?");
     query.addBindValue(typeToString(type));
 
     if (!query.exec() || !query.next())
@@ -207,6 +207,22 @@ int DataBase::getCountByType(const DataType &type)
     }
 
     return query.value(0).toInt();
+}
+
+Data DataBase::getDataById(int id)
+{
+    Data data;
+    QSqlQuery query;
+    query.prepare("SELECT id, content, favorite, timestamp, type, tag FROM " + table_name + " WHERE id = ?");
+    query.addBindValue(id);
+
+    if (!query.exec() || !query.next())
+    {
+        qDebug() << "[getDataById(int id)] 查询失败";
+        return data;
+    }
+
+    return rowToData(query);
 }
 
 void DataBase::qmlClickChangeFavorite(const int &id, const bool &favo, const QString& data_type)
@@ -303,7 +319,7 @@ Data DataBase::rowToData(const QSqlQuery &query)
     data.favorite = query.value("favorite").toBool();
     data.timestamp_ = query.value("timestamp").toDateTime();
     data.type_ = stringToType(query.value("type").toString());
-    data.tag_ = query.value("timestamp").toString();
+    data.tag_ = query.value("tag").toString();
 
     return data;
 }
