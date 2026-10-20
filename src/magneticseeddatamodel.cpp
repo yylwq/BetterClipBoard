@@ -4,6 +4,8 @@ MagneticSeedDataModel::MagneticSeedDataModel(DataBase *database, QObject *parent
 {
     datas = database->getAllDataByType(DataType::MagneticSeed);
     connect(database, &DataBase::insertedData, this, &MagneticSeedDataModel::updateDatas);
+    connect(database, &DataBase::magneticseedFavoriteChanged, this, &MagneticSeedDataModel::updateFavorite);
+    connect(database, &DataBase::magneticseedDeleteData, this, &MagneticSeedDataModel::deleteData);
 }
 
 void MagneticSeedDataModel::addData(const Data &data)

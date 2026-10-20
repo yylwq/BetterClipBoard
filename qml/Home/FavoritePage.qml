@@ -48,10 +48,12 @@ Rectangle{
                 height: 148
                 anchors.centerIn: parent
 
+                dataId: model.id
                 dataText: model.text
                 dataType: model.type
                 dataTag: model.tag
                 dataTimestamp: model.timestamp
+                dataFavorite: model.favorite
             }
         }
     }

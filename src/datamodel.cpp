@@ -76,6 +76,41 @@ void DataModel::loadFavoriteData(int limit)
     emit pageChanged();
 }
 
+void DataModel::updataFavoriteDataFromModel(const int &id, const bool &favo)
+{
+    for (int i = 0; i < datas.size(); ++i) {
+        if (datas[i].id_ == id) {
+            datas[i].favorite = (!favo);
+
+            QModelIndex itemIndex = index(i, 0);
+            emit dataChanged(itemIndex, itemIndex, {FavoriteRole});
+            break;
+        }
+    }
+}
+
+void DataModel::removeDataFromModel(const int &id)
+{
+    for (int i = 0; i < datas.size(); ++i) {
+        if (datas[i].id_ == id) {
+            beginRemoveRows(QModelIndex(), i, i);
+            datas.removeAt(i);
+            endRemoveRows();
+            break;
+        }
+    }
+}
+
+void DataModel::updateFavorite(const int &id, const bool &favo)
+{
+    updataFavoriteDataFromModel(id, favo);
+}
+
+void DataModel::deleteData(const int &id)
+{
+    removeDataFromModel(id);
+}
+
 
 
 

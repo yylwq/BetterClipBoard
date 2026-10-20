@@ -6,11 +6,22 @@ import HuskarUI.Basic
 Rectangle {
     id: dataCard
 
+    property int dataId: -1
     property string dataText: ""
     property string dataTag: ""
     property string dataType: ""
     property string dataTimestamp: ""
     property string dataColor: "white"
+    property bool dataFavorite: false
+
+    HusMessage {
+        id: copyMessage
+        z: 999
+        parent: betterClipboardWindow.captionBar
+        width: parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.bottom
+    }
 
 
     color: dataColor
@@ -77,16 +88,31 @@ Rectangle {
                     HusIconButton {
                         iconSource: HusIcon.CopyOutlined
                         HusToolTip { showArrow: true; visible: parent.hovered; text: '复制' }
+                        onClicked: function()
+                        {
+                            listener.qmlClickCopy(dataText)
+                            copyMessage.success("成功复制到剪切板！")
+                        }
                     }
 
                     HusIconButton {
-                        iconSource: HusIcon.StarOutlined
+                        iconSource: dataFavorite ? HusIcon.StarFilled : HusIcon.StarOutlined
                         HusToolTip { showArrow: true; visible: parent.hovered; text: '收藏' }
+
+                        onClicked: function()
+                        {
+                            database.qmlClickChangeFavorite(dataId, dataFavorite, dataType)
+                        }
                     }
 
                     HusIconButton {
                         iconSource: HusIcon.DeleteOutlined
                         HusToolTip { showArrow: true; visible: parent.hovered; text: '删除' }
+
+                        onClicked: function()
+                        {
+                            database.qmlDeleteData(dataId, dataType)
+                        }
                     }
                 }
             }

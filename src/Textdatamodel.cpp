@@ -5,6 +5,8 @@ TextDataModel::TextDataModel(DataBase *database, QObject *parent) : DataModel(da
 {
     datas = database->getAllDataByType(DataType::Text);
     connect(database, &DataBase::insertedData, this, &TextDataModel::updateDatas);
+    connect(database, &DataBase::textFavoriteChanged, this, &TextDataModel::updateFavorite);
+    connect(database, &DataBase::textDeleteData, this, &TextDataModel::deleteData);
 }
 
 void TextDataModel::addData(const Data &data)

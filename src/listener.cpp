@@ -32,7 +32,7 @@ void Listener::listened()
 
     if (clipboard->ownsClipboard())
     {
-        qDebug() << "未检测到数据！";
+        qDebug() << "[Listener] 未检测到数据！";
         return;
     }
 
@@ -40,7 +40,7 @@ void Listener::listened()
 
     if (copy_text != last_text)
     {
-        qDebug() << "[监听器] 捕获到文本: " << copy_text;
+        qDebug() << "[Listener] 捕获到文本: " << copy_text;
         last_text = copy_text;
 
         emit textCopied(copy_text);
@@ -51,9 +51,17 @@ void Listener::listened()
     QImage copy_image = clipboard->image();
     if (copy_image != last_image)
     {
-        qDebug() << "[监听器] 捕获到图片 ";
+        qDebug() << "[Listener] 捕获到图片 ";
         last_image = copy_image;
 
         emit imageCopied(copy_image);
     }
+}
+
+void Listener::qmlClickCopy(const QString &text)
+{
+    QClipboard *clipboard = QGuiApplication::clipboard();
+
+    clipboard->setText(text);
+    qDebug() << "[Listener] 已将" << text << "复制到剪切板";
 }

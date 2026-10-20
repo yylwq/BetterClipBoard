@@ -58,7 +58,7 @@ void DataBase::insertData(const Data &data)
     emit insertedData(data);
 }
 
-void DataBase::removeDate(int id)
+void DataBase::removeData(int id)
 {
     QSqlQuery query;
     query.prepare("DELETE FROM datas WHERE id = ?");
@@ -67,6 +67,26 @@ void DataBase::removeDate(int id)
     if (!query.exec())
     {
         qDebug() << "[removeDate(int id)] 删除失败！";
+        qDebug() << "SQL: " << query.lastQuery();
+    }
+}
+
+void DataBase::changeFavorite(const int& id, const bool &favo)
+{
+    QSqlQuery query;
+    query.prepare("UPDATE " + table_name +" SET favorite = ? WHERE id = ?");
+    if (favo)
+    {
+        query.addBindValue(false);
+    }else{
+        query.addBindValue(true);
+    }
+
+    query.addBindValue(id);
+
+    if (!query.exec())
+    {
+        qDebug() << "[changeFavorite(const int& id, const bool &favo)] 更新star失败！";
         qDebug() << "SQL: " << query.lastQuery();
     }
 }
@@ -187,6 +207,62 @@ int DataBase::getCountByType(const DataType &type)
     }
 
     return query.value(0).toInt();
+}
+
+void DataBase::qmlClickChangeFavorite(const int &id, const bool &favo, const QString& data_type)
+{
+    changeFavorite(id, favo);
+
+    DataType dt = stringToType(data_type);
+
+    switch (dt)
+    {
+    case DataType::Code:
+        emit codeFavoriteChanged(id, favo);
+        break;
+    case DataType::Email:
+        emit emailFavoriteChanged(id, favo);
+        break;
+    case DataType::MagneticSeed:
+        emit magneticseedFavoriteChanged(id, favo);
+        break;
+    case DataType::Url:
+        emit urlFavoriteChanged(id, favo);
+        break;
+    default:
+        emit textFavoriteChanged(id, favo);
+    }
+
+    emit favoriteFavoriteChanged(id, favo);
+    emit recentFavoriteChanged(id, favo);
+}
+
+void DataBase::qmlDeleteData(const int &id, const QString &data_type)
+{
+    removeData(id);
+
+    DataType dt = stringToType(data_type);
+
+    switch (dt)
+    {
+    case DataType::Code:
+        emit codeDeleteData(id);
+        break;
+    case DataType::Email:
+        emit emailDeleteData(id);
+        break;
+    case DataType::MagneticSeed:
+        emit magneticseedDeleteData(id);
+        break;
+    case DataType::Url:
+        emit urlDeleteData(id);
+        break;
+    default:
+        emit textDeleteData(id);
+    }
+
+    emit favoriteDeleteData(id);
+    emit recentDeleteData(id);
 }
 
 void DataBase::initDatabase()

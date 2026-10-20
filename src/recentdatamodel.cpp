@@ -5,6 +5,8 @@ RecentDataModel::RecentDataModel(DataBase *database, QObject *parent) : DataMode
 {
     datas = database->getRecentData(200);
     connect(database, &DataBase::insertedData, this, &RecentDataModel::updateDatas);
+    connect(database, &DataBase::recentFavoriteChanged, this, &RecentDataModel::updateFavorite);
+    connect(database, &DataBase::recentDeleteData, this, &RecentDataModel::deleteData);
 }
 
 void RecentDataModel::addData(const Data &data)

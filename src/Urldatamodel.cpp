@@ -5,6 +5,8 @@ UrlDataModel::UrlDataModel(DataBase *database, QObject *parent) : DataModel(data
 {
     datas = database->getAllDataByType(DataType::Url);
     connect(database, &DataBase::insertedData, this, &UrlDataModel::updateDatas);
+    connect(database, &DataBase::urlFavoriteChanged, this, &UrlDataModel::updateFavorite);
+    connect(database, &DataBase::urlDeleteData, this, &UrlDataModel::deleteData);
 }
 
 void UrlDataModel::addData(const Data &data)

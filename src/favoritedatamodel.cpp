@@ -5,6 +5,8 @@ FavoriteDataModel::FavoriteDataModel(DataBase *database, QObject *parent) : Data
 {
     datas = database->getFavoriteData(200);
     connect(database, &DataBase::insertedData, this, &FavoriteDataModel::updateDatas);
+    connect(database, &DataBase::favoriteFavoriteChanged, this, &FavoriteDataModel::updateFavorite);
+    connect(database, &DataBase::favoriteDeleteData, this, &FavoriteDataModel::deleteData);
 }
 
 void FavoriteDataModel::addData(const Data &data)
@@ -18,4 +20,9 @@ void FavoriteDataModel::updateDatas(const Data &data)
 {
     if (data.favorite == true)
         addData(data);
+}
+
+void FavoriteDataModel::updateFavorite(const int &id, const bool &favo)
+{
+    removeDataFromModel(id);
 }

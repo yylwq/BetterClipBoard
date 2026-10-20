@@ -19,6 +19,8 @@ public:
 public slots:
     void listened();
 
+    void qmlClickCopy(const QString& text);
+
 private:
     bool is_listen;
 

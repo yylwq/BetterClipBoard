@@ -32,13 +32,17 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QHash<int, QByteArray> roleNames() const override;
 
-    // 切换数据
     Q_INVOKABLE void loadPage(const QString &type);
     Q_INVOKABLE void loadRecentData(int limit = 200);
     Q_INVOKABLE void loadFavoriteData(int limit = 200);
 
+    void updataFavoriteDataFromModel(const int& id, const bool &favo);
+    void removeDataFromModel(const int &id);
+
 public slots:
     virtual void updateDatas(const Data& data) = 0;
+    virtual void updateFavorite(const int& id, const bool &favo);
+    virtual void deleteData(const int& id);
 
 protected:
     DataBase *database;

@@ -1,6 +1,9 @@
-﻿qml: 0
-qrc:/BetterClipboard/qml/Home/HistoryPage.qml:88: ReferenceError: recentGridView is not defined
-qml: 1
-qrc:/BetterClipboard/qml/Home/HistoryPage.qml:88: ReferenceError: recentGridView is not defined
-qml: 2
-qrc:/BetterClipboard/qml/Home/HistoryPage.qml:86: ReferenceError: recentGridView is not defined
+﻿qrc:/BetterClipboard/qml/Home/RecentPage.qml:41: ReferenceError: recentDataModel is not defined
+qrc:/BetterClipboard/qml/Home/RecentPage.qml:41: ReferenceError: recentDataModel is not defined
+qrc:/BetterClipboard/qml/Home/RecentPage.qml:41: ReferenceError: recentDataModel is not defined
+data 目录已存在: "E:/Code/Qt/BetterClipboard/data"
+database_path:  "E:/Code/Qt/BetterClipboard/data/BetterCB_data.db"
+正在初始化数据库!
+数据库正在建表!
+建表成功!
+qrc:/BetterClipboard/qml/Home/RecentPage.qml:41: ReferenceError: recentDataModel is not defined

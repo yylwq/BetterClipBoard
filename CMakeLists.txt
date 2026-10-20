@@ -52,6 +52,7 @@ qt_add_qml_module(appBetterClipboard
         qml/component/DataCard.qml
         qml/Home/HistoryPage.qml
         qml/Home/FavoritePage.qml
+        SOURCES
 
 )
 

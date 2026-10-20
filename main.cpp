@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QQmlContext>
+#include <QPoint>
 
 #include "include/const.h"
 #include "include/classify.h"
@@ -40,7 +41,11 @@ int main(int argc, char *argv[])
     Listener listener;
     listener.start();
 
+    engine.rootContext()->setContextProperty("listener", &listener);
+
     DataBase database;
+    engine.rootContext()->setContextProperty("database", &database);
+
     DataModel* recent_model = new RecentDataModel(&database);
     DataModel* favorite_model = new FavoriteDataModel(&database);
     DataModel* text_model = new TextDataModel(&database);

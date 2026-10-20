@@ -18,6 +18,8 @@ public:
 public slots:
     virtual void updateDatas(const Data& data) override;
 
+    virtual void updateFavorite(const int& id, const bool &favo) override;
+
 private:
 };
 

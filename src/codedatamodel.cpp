@@ -4,6 +4,8 @@ CodeDataModel::CodeDataModel(DataBase *database, QObject *parent) : DataModel(da
 {
     datas = database->getAllDataByType(DataType::Code);
     connect(database, &DataBase::insertedData, this, &CodeDataModel::updateDatas);
+    connect(database, &DataBase::codeFavoriteChanged, this, &CodeDataModel::updateFavorite);
+    connect(database, &DataBase::codeDeleteData, this, &CodeDataModel::deleteData);
 }
 
 void CodeDataModel::addData(const Data &data)
