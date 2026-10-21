@@ -4,6 +4,7 @@
 #include <QCoreApplication>
 
 #include <QSqlDatabase>
+#include <QSqlError>
 #include <QList>
 #include <QDateTime>
 
@@ -42,8 +43,9 @@ DataBase::DataBase(QObject *parent) : QObject(parent)
 void DataBase::insertData(const Data &data)
 {
     QSqlQuery query;
-    query.prepare("INSERT INTO datas (content, timestamp, type, tag) VALUES (?, ?, ?, ?);");
+    query.prepare("INSERT INTO datas (content, favorite, timestamp, type, tag) VALUES (?, ?, ?, ?, ?);");
     query.addBindValue(data.text_);
+    query.addBindValue(data.favorite ? 1 : 0);
     query.addBindValue(data.timestamp_.toString(Qt::ISODate));
     query.addBindValue(data.typeToString());
     query.addBindValue(data.tag_);
@@ -53,9 +55,14 @@ void DataBase::insertData(const Data &data)
         qDebug() << "SQL:" << query.lastQuery();
         return;
     }
-    qDebug() << "[SQL] 插入一条数据：" << data.timestamp_.toString(Qt::ISODate) << " " <<data.text_ << " " << typeToString(data.type_);
 
-    emit insertedData(data);
+    Data emitted = data;
+    emitted.id_ = query.lastInsertId().toInt();
+    qDebug() << "[SQL] 插入成功 id=" << emitted.id_
+             << emitted.timestamp_.toString(Qt::ISODate)
+             << emitted.text_ << typeToString(emitted.type_);
+
+    emit insertedData(emitted);
 }
 
 void DataBase::removeData(int id)
@@ -216,9 +223,20 @@ Data DataBase::getDataById(int id)
     query.prepare("SELECT id, content, favorite, timestamp, type, tag FROM " + table_name + " WHERE id = ?");
     query.addBindValue(id);
 
-    if (!query.exec() || !query.next())
+    if (!query.exec())
     {
-        qDebug() << "[getDataById(int id)] 查询失败";
+        qDebug() << "[getDataById] SQL 执行失败 id=" << id;
+        qDebug() << "  error:" << query.lastError().text();
+        qDebug() << "  sql:" << query.lastQuery();
+        return data;
+    }
+    if (!query.next())
+    {
+        qDebug() << "[getDataById] 未找到 id=" << id;
+        qDebug() << "  表中总行数:";
+        QSqlQuery cq;
+        cq.exec("SELECT COUNT(*) FROM " + table_name);
+        if (cq.next()) qDebug() << "    count =" << cq.value(0).toInt();
         return data;
     }
 
