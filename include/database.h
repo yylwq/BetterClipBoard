@@ -18,8 +18,9 @@ public:
     void changeFavorite(const int &id, const bool &favo);
 
     QList<Data> getAllData();
-    QList<Data> getRecentData(int limit);
-    QList<Data> getFavoriteData(int limit);
+    QList<Data> getRecentData(int limit = 200);
+    QList<Data> getFavoriteData(int limit = 200);
+    QList<Data> getFavoriteDataByType(DataType type);
 
     QList<Data> getAllDataByType(const DataType &type);
     int getCountByType(const DataType &type);
@@ -43,13 +44,13 @@ private:
 signals:
     void insertedData(const Data &data);
 
-    void urlFavoriteChanged(const int& id, const bool &favo);
-    void emailFavoriteChanged(const int& id, const bool &favo);
-    void textFavoriteChanged(const int& id, const bool &favo);
-    void magneticseedFavoriteChanged(const int& id, const bool &favo);
-    void codeFavoriteChanged(const int& id, const bool &favo);
-    void recentFavoriteChanged(const int& id, const bool &favo);
-    void favoriteFavoriteChanged(const int& id, const bool &favo);
+    void urlFavoriteChanged(const int& id, const bool &favo, const DataType& data_type);
+    void emailFavoriteChanged(const int& id, const bool &favo, const DataType& data_type);
+    void textFavoriteChanged(const int& id, const bool &favo, const DataType& data_type);
+    void magneticseedFavoriteChanged(const int& id, const bool &favo, const DataType& data_type);
+    void codeFavoriteChanged(const int& id, const bool &favo, const DataType& data_type);
+    void recentFavoriteChanged(const int& id, const bool &favo, const DataType& data_type);
+    void favoriteFavoriteChanged(const int& id, const bool &favo, const DataType& data_type);
 
     void urlDeleteData(const int& id);
     void emailDeleteData(const int& id);

@@ -37,4 +37,32 @@ QtObject {
 
     ]
 
+    property var favoritePageTabModel: [
+        {
+            key: '0',
+            title: '全部',
+        },
+        {
+            key: '1',
+            title: '文本',
+        },
+        {
+            key: '2',
+            title: '代码',
+        },
+        {
+            key: '3',
+            title: '邮箱',
+        },
+        {
+            key: "4",
+            title: "链接"
+        },
+        {
+            key: "5",
+            title: "磁力种子"
+        }
+
+    ]
+
 }

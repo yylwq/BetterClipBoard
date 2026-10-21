@@ -41,7 +41,7 @@ public:
 
 public slots:
     virtual void updateDatas(const Data& data) = 0;
-    virtual void updateFavorite(const int& id, const bool &favo);
+    virtual void updateFavorite(const int& id, const bool &favo, const DataType& data_type);
     virtual void deleteData(const int& id);
 
 protected:

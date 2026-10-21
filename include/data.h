@@ -13,7 +13,7 @@ enum DataType
     Code,
     Email,
     Url,
-    MagneticSeed
+    MagneticSeed,
 };
 
 struct Data

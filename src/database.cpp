@@ -173,6 +173,33 @@ QList<Data> DataBase::getFavoriteData(int limit)
     return datas;
 }
 
+QList<Data> DataBase::getFavoriteDataByType(DataType type)
+{
+    QList<Data> datas;
+
+    QSqlQuery query;
+    const QString sql =
+        "SELECT id, content, favorite, timestamp, type, tag FROM " + table_name +
+        " WHERE type = ? AND favorite = 1 ORDER BY timestamp DESC";
+
+    query.prepare(sql);
+    query.addBindValue(typeToString(type));
+
+    if (!query.exec())
+    {
+        qDebug() << "[getFavoriteDataByType(DataType type)] 查询失败";
+        qDebug() << "sql:" << query.lastQuery();
+        return datas;
+    }
+
+    while (query.next())
+    {
+        Data data = rowToData(query);
+        datas.push_back(data);
+    }
+    return datas;
+}
+
 
 QList<Data> DataBase::getAllDataByType(const DataType &type)
 {
@@ -252,23 +279,23 @@ void DataBase::qmlClickChangeFavorite(const int &id, const bool &favo, const QSt
     switch (dt)
     {
     case DataType::Code:
-        emit codeFavoriteChanged(id, favo);
+        emit codeFavoriteChanged(id, favo, dt);
         break;
     case DataType::Email:
-        emit emailFavoriteChanged(id, favo);
+        emit emailFavoriteChanged(id, favo, dt);
         break;
     case DataType::MagneticSeed:
-        emit magneticseedFavoriteChanged(id, favo);
+        emit magneticseedFavoriteChanged(id, favo, dt);
         break;
     case DataType::Url:
-        emit urlFavoriteChanged(id, favo);
+        emit urlFavoriteChanged(id, favo, dt);
         break;
     default:
-        emit textFavoriteChanged(id, favo);
+        emit textFavoriteChanged(id, favo, dt);
     }
 
-    emit favoriteFavoriteChanged(id, favo);
-    emit recentFavoriteChanged(id, favo);
+    emit favoriteFavoriteChanged(id, favo, dt);
+    emit recentFavoriteChanged(id, favo, dt);
 }
 
 void DataBase::qmlDeleteData(const int &id, const QString &data_type)

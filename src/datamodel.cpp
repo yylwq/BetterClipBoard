@@ -101,7 +101,7 @@ void DataModel::removeDataFromModel(const int &id)
     }
 }
 
-void DataModel::updateFavorite(const int &id, const bool &favo)
+void DataModel::updateFavorite(const int &id, const bool &favo, const DataType& data_type)
 {
     updataFavoriteDataFromModel(id, favo);
 }

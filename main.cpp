@@ -21,6 +21,12 @@
 #include "include/DataModel/magneticseeddatamodel.h"
 #include "include/DataModel/codedatamodel.h"
 
+#include "include/DataModel/favoriteDataModel/codeFavoriteDataModel.hpp"
+#include "include/DataModel/favoriteDataModel/emailFavoriteDataModel.hpp"
+#include "include/DataModel/favoriteDataModel/magneticseedFavoriteDataModel.hpp"
+#include "include/DataModel/favoriteDataModel/textFavoriteDataModel.hpp"
+#include "include/DataModel/favoriteDataModel/urlFavoriteDataModel.hpp"
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -34,21 +40,35 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("database", &database);
     engine.rootContext()->setContextProperty("listener", &listener);
 
-    DataModel* recent_model = new RecentDataModel(&database);
-    DataModel* favorite_model = new FavoriteDataModel(&database);
-    DataModel* text_model = new TextDataModel(&database);
-    DataModel* email_model = new EmailDataModel(&database);
-    DataModel* url_model = new UrlDataModel(&database);
-    DataModel* code_model = new CodeDataModel(&database);
-    DataModel* magneticseed_model = new MagneticSeedDataModel(&database);
+    DataModel* recent_model = new RecentDataModel(&database, &engine);
+    // DataModel* favorite_model = new FavoriteDataModel(&database, &engine);
+    DataModel* text_model = new TextDataModel(&database, &engine);
+    DataModel* email_model = new EmailDataModel(&database, &engine);
+    DataModel* url_model = new UrlDataModel(&database, &engine);
+    DataModel* code_model = new CodeDataModel(&database, &engine);
+    DataModel* magneticseed_model = new MagneticSeedDataModel(&database, &engine);
 
     engine.rootContext()->setContextProperty("recentDataModel", recent_model);
-    engine.rootContext()->setContextProperty("favoriteDataModel", favorite_model);
+    // engine.rootContext()->setContextProperty("favoriteDataModel", favorite_model);
     engine.rootContext()->setContextProperty("textDataModel", text_model);
     engine.rootContext()->setContextProperty("emailDataModel", email_model);
     engine.rootContext()->setContextProperty("urlDataModel", url_model);
     engine.rootContext()->setContextProperty("codeDataModel", code_model);
     engine.rootContext()->setContextProperty("magneticseedDataModel", magneticseed_model);
+
+    DataModel* all_favorite_model = new FavoriteDataModel(&database, &engine);
+    DataModel* text_favorite_model = new TextFavoriteDataModel(&database, &engine);
+    DataModel* email_favorite_model = new EmailFavoriteDataModel(&database, &engine);
+    DataModel* url_favorite_model = new UrlFavoriteDataModel(&database, &engine);
+    DataModel* code_favorite_model = new CodeFavoriteDataModel(&database, &engine);
+    DataModel* magneticseed_favorite_model = new MagneticSeedFavoriteDataModel(&database, &engine);
+
+    engine.rootContext()->setContextProperty("allFavoriteDataModel", all_favorite_model);
+    engine.rootContext()->setContextProperty("textFavoriteDataModel", text_favorite_model);
+    engine.rootContext()->setContextProperty("emailFavoriteDataModel", email_favorite_model);
+    engine.rootContext()->setContextProperty("urlFavoriteDataModel", url_favorite_model);
+    engine.rootContext()->setContextProperty("codeFavoriteDataModel", code_favorite_model);
+    engine.rootContext()->setContextProperty("magneticseedFavoriteDataModel", magneticseed_favorite_model);
 
     const QUrl url(QStringLiteral("qrc:/BetterClipboard/qml/main.qml"));
     QObject::connect(
