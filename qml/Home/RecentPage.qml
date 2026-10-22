@@ -16,6 +16,14 @@ Rectangle{
         anchors.left: parent.left
         anchors.right: parent.right
         height: 40
+
+        keyword:   recentSearchProxyModel.keyword
+        timeRange: recentSearchProxyModel.timeRange
+        sortOrder: recentSearchProxyModel.sortOrder
+
+        onKeywordChanged:   recentSearchProxyModel.keyword   = keyword
+        onTimeRangeChanged: recentSearchProxyModel.timeRange = timeRange
+        onSortOrderChanged: recentSearchProxyModel.sortOrder = sortOrder
     }
 
     GridView {
@@ -38,7 +46,7 @@ Rectangle{
 
         ScrollBar.vertical: HusScrollBar {}
 
-        model: recentDataModel
+        model: recentSearchProxyModel
 
         delegate: Item {
             width: recentGridView.cellWidth
@@ -58,7 +66,4 @@ Rectangle{
             }
         }
     }
-
 }
-
-

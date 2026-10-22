@@ -32,12 +32,44 @@ Rectangle{
             anchors.fill: parent
             radius: 8
 
+            property var curFavoriteProxyModel: {
+                switch (favoriteTabView.currentIndex) {
+                case 0: return allFavoriteSearchProxyModel
+                case 1: return textFavoriteSearchProxyModel
+                case 2: return codeFavoriteSearchProxyModel
+                case 3: return emailFavoriteSearchProxyModel
+                case 4: return urlFavoriteSearchProxyModel
+                case 5: return magneticseedFavoriteSearchProxyModel
+                default: return allFavoriteSearchProxyModel
+                }
+            }
+
             SearchBar{
                 id: favoriteSearchBar
                 anchors.top: parent.top
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 40
+
+                Component.onCompleted: {
+                    keyword   = curFavoriteProxyModel.keyword
+                    timeRange = curFavoriteProxyModel.timeRange
+                    sortOrder = curFavoriteProxyModel.sortOrder
+                }
+
+                onKeywordChanged: function()
+                {
+                    curFavoriteProxyModel.keyword = keyword
+                }
+
+                onTimeRangeChanged:
+                {
+                    curFavoriteProxyModel.timeRange = timeRange
+                }
+
+                onSortOrderChanged: function () {
+                    curFavoriteProxyModel.sortOrder = sortOrder
+                }
             }
 
             GridView {
@@ -60,17 +92,7 @@ Rectangle{
 
                 ScrollBar.vertical: HusScrollBar {}
 
-                model: {
-                    switch (favoriteTabView.currentIndex) {
-                    case 0: return allFavoriteDataModel
-                    case 1: return textFavoriteDataModel
-                    case 2: return codeFavoriteDataModel
-                    case 3: return emailFavoriteDataModel
-                    case 4: return urlFavoriteDataModel
-                    case 5: return magneticseedFavoriteDataModel
-                    default: return allFavoriteDataModel
-                    }
-                }
+                model: curFavoriteProxyModel
 
                 delegate: Item {
                     width: favoriteGridView.cellWidth
@@ -93,7 +115,3 @@ Rectangle{
         }
     }
 }
-
-
-
-

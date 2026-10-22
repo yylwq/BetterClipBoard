@@ -20,6 +20,7 @@
 #include "include/DataModel/favoritedatamodel.h"
 #include "include/DataModel/magneticseeddatamodel.h"
 #include "include/DataModel/codedatamodel.h"
+#include "include/DataModel/searchproxymodel.h"
 
 #include "include/DataModel/favoriteDataModel/codeFavoriteDataModel.hpp"
 #include "include/DataModel/favoriteDataModel/emailFavoriteDataModel.hpp"
@@ -41,20 +42,18 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("listener", &listener);
 
     DataModel* recent_model = new RecentDataModel(&database, &engine);
-    // DataModel* favorite_model = new FavoriteDataModel(&database, &engine);
     DataModel* text_model = new TextDataModel(&database, &engine);
     DataModel* email_model = new EmailDataModel(&database, &engine);
     DataModel* url_model = new UrlDataModel(&database, &engine);
     DataModel* code_model = new CodeDataModel(&database, &engine);
     DataModel* magneticseed_model = new MagneticSeedDataModel(&database, &engine);
 
-    engine.rootContext()->setContextProperty("recentDataModel", recent_model);
-    // engine.rootContext()->setContextProperty("favoriteDataModel", favorite_model);
-    engine.rootContext()->setContextProperty("textDataModel", text_model);
-    engine.rootContext()->setContextProperty("emailDataModel", email_model);
-    engine.rootContext()->setContextProperty("urlDataModel", url_model);
-    engine.rootContext()->setContextProperty("codeDataModel", code_model);
-    engine.rootContext()->setContextProperty("magneticseedDataModel", magneticseed_model);
+    // engine.rootContext()->setContextProperty("recentDataModel", recent_model);
+    // engine.rootContext()->setContextProperty("textDataModel", text_model);
+    // engine.rootContext()->setContextProperty("emailDataModel", email_model);
+    // engine.rootContext()->setContextProperty("urlDataModel", url_model);
+    // engine.rootContext()->setContextProperty("codeDataModel", code_model);
+    // engine.rootContext()->setContextProperty("magneticseedDataModel", magneticseed_model);
 
     DataModel* all_favorite_model = new FavoriteDataModel(&database, &engine);
     DataModel* text_favorite_model = new TextFavoriteDataModel(&database, &engine);
@@ -63,12 +62,33 @@ int main(int argc, char *argv[])
     DataModel* code_favorite_model = new CodeFavoriteDataModel(&database, &engine);
     DataModel* magneticseed_favorite_model = new MagneticSeedFavoriteDataModel(&database, &engine);
 
-    engine.rootContext()->setContextProperty("allFavoriteDataModel", all_favorite_model);
-    engine.rootContext()->setContextProperty("textFavoriteDataModel", text_favorite_model);
-    engine.rootContext()->setContextProperty("emailFavoriteDataModel", email_favorite_model);
-    engine.rootContext()->setContextProperty("urlFavoriteDataModel", url_favorite_model);
-    engine.rootContext()->setContextProperty("codeFavoriteDataModel", code_favorite_model);
-    engine.rootContext()->setContextProperty("magneticseedFavoriteDataModel", magneticseed_favorite_model);
+    // engine.rootContext()->setContextProperty("allFavoriteDataModel", all_favorite_model);
+    // engine.rootContext()->setContextProperty("textFavoriteDataModel", text_favorite_model);
+    // engine.rootContext()->setContextProperty("emailFavoriteDataModel", email_favorite_model);
+    // engine.rootContext()->setContextProperty("urlFavoriteDataModel", url_favorite_model);
+    // engine.rootContext()->setContextProperty("codeFavoriteDataModel", code_favorite_model);
+    // engine.rootContext()->setContextProperty("magneticseedFavoriteDataModel", magneticseed_favorite_model);
+
+    auto makeProxy = [&](DataModel* src, const QString &name) -> SearchProxyModel* {
+        SearchProxyModel *p = new SearchProxyModel(&engine);
+        p->setSourceModel(src);
+        engine.rootContext()->setContextProperty(name, p);
+        return p;
+    };
+
+    makeProxy(recent_model, "recentSearchProxyModel");
+    makeProxy(text_model, "textSearchProxyModel");
+    makeProxy(email_model, "emailSearchProxyModel");
+    makeProxy(url_model, "urlSearchProxyModel");
+    makeProxy(code_model, "codeSearchProxyModel");
+    makeProxy(magneticseed_model, "magneticseedSearchProxyModel");
+
+    makeProxy(all_favorite_model, "allFavoriteSearchProxyModel");
+    makeProxy(text_favorite_model, "textFavoriteSearchProxyModel");
+    makeProxy(email_favorite_model, "emailFavoriteSearchProxyModel");
+    makeProxy(url_favorite_model, "urlFavoriteSearchProxyModel");
+    makeProxy(code_favorite_model, "codeFavoriteSearchProxyModel");
+    makeProxy(magneticseed_favorite_model, "magneticseedFavoriteSearchProxyModel");
 
     const QUrl url(QStringLiteral("qrc:/BetterClipboard/qml/main.qml"));
     QObject::connect(

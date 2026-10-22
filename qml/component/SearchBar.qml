@@ -9,6 +9,10 @@ HusRectangle{
     anchors.topMargin: 8
     anchors.bottomMargin: 5
 
+    property alias keyword: searchInput.text
+    property alias timeRange: timeSelect.currentValue
+    property alias sortOrder: sortSelect.currentValue
+
     RowLayout {
         anchors.fill: parent
         anchors.leftMargin: 16
@@ -16,29 +20,27 @@ HusRectangle{
         spacing: 8
 
         HusInput {
-            id:searchInput
+            id: searchInput
             Layout.fillWidth: true
             placeholderText: "搜索"
             clearEnabled: true
-            onTextChanged: {
-                // ...
-            }
         }
 
-        HusSelect{
+        HusSelect {
+            id: timeSelect
             Layout.preferredWidth: 120
             placeholderText: "时间范围"
             showToolTip: true
             model: [
-                { value: "all", label: "全部"      },
-                { value: "today", label: "今天"    },
-                { value: "week" , label: "本周"    },
-                { value: "7days", label: "近7天"   },
-                { value: "14days", label: "近14天" }
+                { value: "all",   label: "全部"    },
+                { value: "today", label: "今日"    },
+                { value: "week",  label: "本周"    },
+                { value: "14days",label: "近14天"  }
             ]
         }
 
         HusSelect {
+            id: sortSelect
             Layout.preferredWidth: 110
             placeholderText: "排序"
             showToolTip: true
@@ -48,5 +50,4 @@ HusRectangle{
             ]
         }
     }
-
 }

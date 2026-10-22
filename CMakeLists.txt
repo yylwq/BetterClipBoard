@@ -41,6 +41,7 @@ qt_add_qml_module(appBetterClipboard
         include/DataModel/textdatamodel.h
         include/DataModel/codedatamodel.h
         include/DataModel/magneticseeddatamodel.h
+        include/DataModel/searchproxymodel.h
 
         include/DataModel/favoriteDataModel/textFavoriteDataModel.hpp
         include/DataModel/favoriteDataModel/codeFavoriteDataModel.hpp
@@ -59,6 +60,7 @@ qt_add_qml_module(appBetterClipboard
         src/Urldatamodel.cpp
         src/codedatamodel.cpp
         src/magneticseeddatamodel.cpp
+        src/searchproxymodel.cpp
 
 
     RESOURCES

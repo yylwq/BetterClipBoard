@@ -28,10 +28,19 @@ Rectangle{
         initModel: global1.historyPageTabModel
 
         contentDelegate: Rectangle{
-            id: hidtoryPageDelegate
+            id: historyPageDelegate
             anchors.fill: parent
             radius: 8
 
+            property var curProxyModel: {
+                switch (historyTabView.currentIndex) {
+                case 1: return codeSearchProxyModel
+                case 2: return emailSearchProxyModel
+                case 3: return urlSearchProxyModel
+                case 4: return magneticseedSearchProxyModel
+                default: return textSearchProxyModel
+                }
+            }
 
             SearchBar{
                 id: searchBar
@@ -39,10 +48,20 @@ Rectangle{
                 anchors.left: parent.left
                 anchors.right: parent.right
                 height: 40
+
+                Component.onCompleted: {
+                    keyword   = curProxyModel.keyword
+                    timeRange = curProxyModel.timeRange
+                    sortOrder = curProxyModel.sortOrder
+                }
+
+                onKeywordChanged:   curProxyModel.keyword   = keyword
+                onTimeRangeChanged: curProxyModel.timeRange = timeRange
+                onSortOrderChanged: curProxyModel.sortOrder = sortOrder
             }
 
             GridView {
-                id: recentGridView
+                id: historyGridView
 
                 anchors.top: searchBar.bottom
                 anchors.left: parent.left
@@ -61,19 +80,11 @@ Rectangle{
 
                 ScrollBar.vertical: HusScrollBar {}
 
-                model: {
-                    switch (historyTabView.currentIndex) {
-                    case 1: return codeDataModel
-                    case 2: return emailDataModel
-                    case 3: return urlDataModel
-                    case 4: return magneticseedDataModel
-                    default: return textDataModel
-                    }
-                }
+                model: curProxyModel
 
                 delegate: Item {
-                    width: recentGridView.cellWidth
-                    height: recentGridView.cellHeight
+                    width: historyGridView.cellWidth
+                    height: historyGridView.cellHeight
 
                     DataCard {
                         width: parent.width - 8
@@ -92,5 +103,3 @@ Rectangle{
         }
     }
 }
-
-
